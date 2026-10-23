@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Staff authorization | Gauteng Order</title>
+    <link rel="stylesheet" href="/restaurant-site/styles.css" />
+    <link rel="stylesheet" href="/restaurant-site/pawn-logo.css" />
+    <style>
+      .login-shell { max-width: 520px; margin: 0 auto; padding-top: 72px; }
+      .login-card { background: #fff; border: 1px solid #e1dbd1; padding: 28px; }
+      .login-card h2 { margin: 8px 0 10px; }
+      .login-card p { color: #65736c; font: 13px Arial, sans-serif; }
+      .login-form { display: grid; gap: 14px; margin-top: 24px; }
+      .login-form label { display: grid; gap: 5px; font: 700 12px Arial, sans-serif; }
+      .login-form input { border: 1px solid #d8d0c5; padding: 11px; font: 15px Arial, sans-serif; }
+      .login-error { min-height: 22px; color: #a93226; font: 13px Arial, sans-serif; }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand-lockup" href="/"><img src="/restaurant-site/gauteng-order-logo.svg" alt="Gauteng Order company logo" /><span><small>GAUTENG ORDER</small><strong>STAFF ACCESS</strong></span></a>
+      </div>
+    </header>
+    <main class="container login-shell">
+      <section class="login-card">
+        <span class="eyebrow">STAFF AREA</span>
+        <h2>Authorize dashboard access</h2>
+        <p>Enter the staff username and password to view customer pickup orders.</p>
+        <form id="staffLoginForm" class="login-form">
+          <label>Username<input id="username" required autocomplete="username" /></label>
+          <label>Password<input id="password" required type="password" autocomplete="current-password" /></label>
+          <div id="loginError" class="login-error" role="alert"></div>
+          <button class="primary-button" type="submit">Authorize and continue</button>
+        </form>
+      </section>
+    </main>
+    <script>
+      document.getElementById('staffLoginForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        const error = document.getElementById('loginError');
+        const response = await fetch('/api/staff/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value }) });
+        if (!response.ok) { error.textContent = 'Authorization failed. Check the staff details.'; return; }
+        window.location.href = '/restaurant-site/pawn-pickup-dashboard.html';
+      });
+    </script>
+  </body>
+</html>

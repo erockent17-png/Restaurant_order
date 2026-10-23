@@ -1,0 +1,7 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^api(?:/(.*))?$ api.php?path=$1 [QSA,L]
+
+<FilesMatch "^(server\.js|package(-lock)?\.json|start-restaurant\.(bat|sh)|.*\.sqlite)$">
+	Require all denied
+</FilesMatch>

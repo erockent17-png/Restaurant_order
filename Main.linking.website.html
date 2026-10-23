@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauteng Order | Scan. Order. Pay. Collect.</title>
+    <link rel="stylesheet" href="/restaurant-site/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root { --ink: #142c29; --green: #174b42; --green-light: #286b5b; --orange: #e17c3e; --cream: #f7f2e9; --paper: #fffdf8; --muted: #71807a; --line: #dfe4dc; }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; color: var(--ink); background: var(--cream); font-family: Inter, Arial, sans-serif; line-height: 1.6; }
+        a { color: inherit; }
+        .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+        .navbar { position: sticky; top: 0; z-index: 20; background: rgba(20, 44, 41, .96); color: #fff; box-shadow: 0 5px 20px rgba(20, 44, 41, .16); }
+        .nav-container { min-height: 78px; display: flex; align-items: center; gap: 28px; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 900; letter-spacing: 1px; }
+        .logo-icon { display: grid; place-items: center; width: 38px; height: 38px; overflow: hidden; border-radius: 10px; background: var(--orange); }
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-text { font-size: 18px; }
+        .logo-accent, .text-orange { color: var(--orange); }
+        .nav-links { display: flex; align-items: center; gap: 22px; margin: 0 auto; padding: 0; list-style: none; font-size: 13px; }
+        .nav-links a { color: #dce9e3; text-decoration: none; }
+        .nav-links a:hover { color: #fff; }
+        .nav-actions { display: flex; gap: 10px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid transparent; border-radius: 5px; padding: 11px 17px; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .2s, background .2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary { color: #fff; background: var(--orange); }
+        .btn-primary:hover { background: #bd5e2a; }
+        .btn-outline { color: #fff; border-color: rgba(255,255,255,.45); }
+        .btn-ghost { color: var(--green); background: #fff; }
+        .btn-sm { padding: 9px 13px; font-size: 12px; }
+        .btn-lg { padding: 14px 22px; font-size: 14px; }
+        .hamburger { display: none; border: 0; background: transparent; color: #fff; font-size: 23px; }
+        .hero { position: relative; overflow: hidden; color: #fff; background: linear-gradient(120deg, #123b35 0%, #1c5a4d 58%, #c86d39 150%); }
+        .hero-bg { position: absolute; inset: 0; opacity: .25; background-image: linear-gradient(135deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 26px 26px; }
+        .hero-container { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; min-height: 625px; gap: 50px; padding-top: 55px; padding-bottom: 65px; }
+        .hero-content { max-width: 650px; }
+        .hero-badge, .section-tag { display: inline-flex; gap: 8px; align-items: center; color: #f4bd8d; font-size: 11px; font-weight: 800; letter-spacing: 1.7px; text-transform: uppercase; }
+        .hero-title { margin: 18px 0; font-family: Poppins, Inter, sans-serif; font-size: clamp(44px, 7vw, 78px); line-height: 1.03; letter-spacing: -2px; }
+        .hero-subtitle { max-width: 540px; color: #d3e2db; font-size: 17px; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0; }
+        .hero-stats { display: flex; gap: 34px; margin-top: 38px; }
+        .stat { display: flex; flex-direction: column; }
+        .stat-number { color: #f4bd8d; font-size: 26px; font-weight: 800; }
+        .stat-label { color: #bdd0c7; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .hero-visual { position: relative; min-height: 430px; display: grid; place-items: center; }
+        .phone-mockup { width: 245px; padding: 12px; border: 6px solid #102c28; border-radius: 31px; background: #102c28; box-shadow: 20px 25px 0 rgba(0,0,0,.13); transform: rotate(4deg); }
+        .phone-screen { min-height: 405px; padding: 18px 13px; border-radius: 20px; background: #f8f5ef; color: var(--ink); font-size: 10px; }
+        .phone-header { padding-bottom: 15px; font-weight: 900; color: var(--green); }
+        .phone-search { padding: 9px; border-radius: 6px; background: #e8eee9; color: #809087; }
+        .phone-categories { display: flex; justify-content: space-between; margin: 16px 0; text-align: center; }
+        .cat-icon { display: grid; gap: 3px; font-size: 17px; }.cat-icon span { font-size: 8px; color: var(--muted); }
+        .phone-restaurant { padding: 13px; border-radius: 10px; background: #fff; box-shadow: 0 8px 22px rgba(20,44,41,.08); }
+        .rest-header, .rest-item, .phone-cart { display: flex; justify-content: space-between; gap: 7px; }
+        .rest-name { font-weight: 800; }.rest-badge { color: #43826e; font-size: 8px; }.rest-items { margin-top: 13px; }.rest-item { padding: 8px 0; border-top: 1px solid #edf0eb; }
+        .phone-cart { margin-top: 14px; padding: 10px; font-weight: 800; }.cart-total { color: var(--orange); }.phone-pay-btn { padding: 10px; border-radius: 6px; color: #fff; background: var(--orange); text-align: center; font-weight: 800; }
+        .qr-float { position: absolute; right: 2%; bottom: 15px; display: grid; place-items: center; gap: 7px; padding: 13px; border-radius: 12px; color: var(--ink); background: #fff; box-shadow: 0 15px 30px rgba(0,0,0,.2); font-size: 11px; font-weight: 800; }
+        .qr-code { width: 94px; height: 94px; display: grid; place-items: center; overflow: hidden; background: #fff; }.qr-code img { width: 100%; height: 100%; object-fit: cover; }.qr-code i { font-size: 60px; }
+        section:not(.hero) { padding: 85px 0; }.categories { padding: 20px 0 !important; background: #fff; }.categories-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }.category-card { padding: 15px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); text-align: center; font-size: 12px; font-weight: 700; }.cat-emoji { margin-bottom: 4px; font-size: 23px; }
+        .section-header { max-width: 650px; margin: 0 auto 38px; text-align: center; }.section-title { margin: 9px 0; font-family: Poppins, Inter, sans-serif; font-size: clamp(30px, 5vw, 48px); line-height: 1.1; }.section-subtitle { color: var(--muted); }.features, .restaurants, .drive-through, .pricing, .order-demo, .contact { background: var(--paper); }.feature-grid, .restaurant-grid, .drive-grid, .pricing-grid, .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }.feature-card, .restaurant-card, .drive-card, .pricing-card, .contact-form-wrapper { padding: 25px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }.feature-icon, .drive-icon, .advantage-icon { color: var(--orange); font-size: 25px; }.feature-card h3, .restaurant-card h3, .drive-card h3 { margin: 12px 0 5px; }.feature-card p, .restaurant-card p, .drive-card p { margin: 0; color: var(--muted); font-size: 14px; }.order-flow { max-width: 650px; margin: auto; padding: 35px; border-radius: 12px; background: #e9f0eb; text-align: center; }.order-step-icon { color: var(--green-light); font-size: 32px; }.order-step-detail { color: var(--muted); }.hidden { display: none !important; }.demo-menu, .order-confirmation { margin: 18px auto; max-width: 360px; padding: 12px 18px; background: #fff; text-align: left; }.demo-item, .conf-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--line); }.contact-grid { grid-template-columns: 1fr 1fr; align-items: start; }.contact-details { display: grid; gap: 15px; margin-top: 25px; }.contact-item { display: flex; gap: 14px; }.contact-item i { color: var(--orange); }.form-group { display: grid; gap: 5px; margin-bottom: 15px; }.form-group input, .form-group textarea, .form-group select { width: 100%; border: 1px solid var(--line); padding: 11px; font: inherit; }.btn-block { width: 100%; }.footer { padding: 55px 0 20px; color: #c6d7cf; background: var(--ink); }.footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 30px; }.footer .logo { color: #fff; }.footer h4 { margin-top: 0; color: #fff; }.footer-links ul { margin: 0; padding: 0; list-style: none; }.footer-links li { margin: 8px 0; font-size: 13px; }.footer a { text-decoration: none; }.footer-bottom { margin-top: 35px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.15); font-size: 12px; }
+        @media (max-width: 800px) { .nav-links { display: none; position: absolute; top: 78px; left: 0; right: 0; padding: 18px 20px; background: var(--ink); }.nav-links.open { display: grid; }.nav-actions { display: none; }.hamburger { display: block; margin-left: auto; }.hero-container { grid-template-columns: 1fr; }.hero-visual { min-height: 390px; }.categories-grid { grid-template-columns: repeat(3, 1fr); }.feature-grid, .restaurant-grid, .drive-grid, .pricing-grid, .footer-grid, .contact-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 480px) { .container { width: min(100% - 28px, 1120px); }.hero-title { font-size: 43px; }.hero-stats { gap: 17px; }.hero-visual { transform: scale(.9); }.qr-float { right: -4px; }.categories-grid { gap: 8px; }.category-card { font-size: 10px; } section:not(.hero) { padding: 60px 0; } }
+        .available-restaurants { background: #f7f2e9; }
+        .restaurant-directory { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+        .directory-card { display: flex; min-height: 220px; flex-direction: column; justify-content: space-between; padding: 24px; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+        .directory-card h3 { margin: 10px 0 4px; font-family: Poppins, Inter, sans-serif; font-size: 24px; }
+        .directory-card p { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+        .directory-menu { margin: 0 0 18px; padding: 0; color: var(--muted); list-style: none; font-size: 13px; }
+        .directory-menu li { padding: 5px 0; border-bottom: 1px solid var(--line); }
+        .directory-loading, .directory-error { grid-column: 1 / -1; padding: 22px; color: var(--muted); text-align: center; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">
+                    <img src="/restaurant-site/gauteng-order-logo.svg" alt="Gauteng Order logo">
+                </span>
+                    <span class="logo-text">GAUTENG<span class="logo-accent">ORDER</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#available-restaurants">Restaurants</a></li>
+                <li><a href="#restaurants">For Restaurants</a></li>
+                <li><a href="#drive-through">Drive-Through</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="/restaurant-site/index.html" class="btn btn-primary btn-sm">Order Now</a>
+                <a href="#restaurants" class="btn btn-outline btn-sm">Partner With Us</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-bolt"></i>
+                    No App Download Required
+                </div>
+                <h1 class="hero-title">
+                    Scan. Order.<br>
+                    <span class="text-orange">Pay. Collect.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Gauteng Order Industry (Pty) Ltd makes food ordering simple. Scan a QR code, browse menus, and collect your meal.
+                </p>
+                <div class="hero-actions">
+                    <a href="/restaurant-site/index.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-qrcode"></i> Start Ordering
+                    </a>
+                    <a href="/restaurant-site/pawn-pick-up-order.html" class="btn btn-outline btn-lg">
+                        <i class="fas fa-store"></i> Pawn Pick Up Order
+                    </a>
+                    <a href="#how-it-works" class="btn btn-ghost btn-lg">
+                        <i class="fas fa-play-circle"></i> See How It Works
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">1</span>
+                        <span class="stat-label">Platform</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Restaurants</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Apps Needed</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <i class="fas fa-qrcode"></i> GAUTENG ORDER
+                        </div>
+                        <div class="phone-search">
+                            <i class="fas fa-search"></i>
+                            What are you hungry for?
+                        </div>
+                        <div class="phone-categories">
+                            <div class="cat-icon">🍔<span>Burgers</span></div>
+                            <div class="cat-icon">🍗<span>Chicken</span></div>
+                            <div class="cat-icon">🍕<span>Pizza</span></div>
+                            <div class="cat-icon">☕<span>Coffee</span></div>
+                        </div>
+                        <div class="phone-restaurant">
+                            <div class="rest-header">
+                                <span class="rest-name">Burger Palace</span>
+                                <span class="rest-badge">Pickup 15min</span>
+                            </div>
+                            <div class="rest-items">
+                                <div class="rest-item">
+                                    <span>Classic Beef Burger</span>
+                                    <span>R75</span>
+                                </div>
+                                <div class="rest-item">
+                                    <span>Chicken Burger</span>
+                                    <span>R70</span>
+                                </div>
+                                <div class="rest-item">
+                                    <span>Cheese Burger Combo</span>
+                                    <span>R95</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-cart">
+                            <span>Your Order</span>
+                            <span class="cart-total">R130</span>
+                        </div>
+                        <div class="phone-pay-btn">
+                            PAY NOW
+                        </div>
+                    </div>
+                </div>
+                <div class="qr-float">
+                    <div class="qr-code" id="siteQrCode">
+                        <img src="/api/qrcode?url=%2Frestaurant-site%2Findex.html" alt="Scan to open the restaurant menu">
+                    </div>
+                    <span>Scan to Order</span>
+                    <a id="downloadQrJpg" href="#" download="gauteng-order-qr.jpg">Download JPG</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <a href="#how-it-works"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- Categories Bar -->
+    <section class="categories">
+        <div class="container">
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="cat-emoji">🍔</div>
+                    <span>Burgers</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-emoji">🍗</div>
+                    <span>Fried Chicken</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-emoji">🍕</div>
+                    <span>Pizza</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-emoji">🥪</div>
+                    <span>Sandwiches</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-emoji">☕</div>
+                    <span>Coffee & Café</span>
+                </div>
+                <div class="category-card">
+                    <div class="cat-emoji">🍟</div>
+                    <span>Takeaways</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Simple & Fast</span>
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">From scan to collection in minutes — no app, no queue, no confusion.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3>Scan</h3>
+                    <p>Scan the QR code at any participating restaurant or open the local ordering page.</p>
+                </div>
+                <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Order</h3>
+                    <p>Browse the menu, select your food, choose pickup or drive-through collection</p>
+                </div>
+                <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Pay</h3>
+                    <p>Pay securely online via Payfast, Yoco or other supported South African gateways</p>
+                </div>
+                <div class="step-connector"><i class="fas fa-arrow-right"></i></div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>Collect</h3>
+                    <p>Arrive, give your order number or username, and collect your food — it's that simple</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Why Gauteng Order</span>
+                <h2 class="section-title">One Platform, Many Restaurants</h2>
+                <p class="section-subtitle">You don't need five different restaurant apps. One platform. One account. One ordering experience.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-blue">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>No App Required</h3>
+                    <p>Works entirely in your mobile browser. Scan a QR code, and you're ordering. No downloads, no sign-ups required to browse.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-orange">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h3>Multi-Restaurant</h3>
+                    <p>Browse burgers, pizza, chicken, cafés and more — all from one platform. Discover new restaurants near you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-green">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Drive-Through</h3>
+                    <p>Order before you arrive, select drive-through, enter your vehicle registration, and collect without leaving your car.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-purple">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Secure Payments</h3>
+                    <p>Pay securely through trusted South African payment gateways — Payfast, Yoco and more. Your card details stay safe.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-red">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Real-Time Updates</h3>
+                    <p>Track your order status in real time: Received → Accepted → Preparing → Ready → Collected.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-teal">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Order History</h3>
+                    <p>Re-order your favourites with a tap. View past orders, track spending, and manage your account easily.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="available-restaurants" id="available-restaurants">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Order Nearby</span>
+                <h2 class="section-title">Restaurants and Stalls</h2>
+                <p class="section-subtitle">Choose a counter, browse its menu, and place your pickup order through Gauteng Order.</p>
+            </div>
+            <div id="restaurantDirectory" class="restaurant-directory" aria-live="polite">
+                <p class="directory-loading">Loading restaurants...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Restaurants -->
+    <section class="restaurants" id="restaurants">
+        <div class="container">
+            <div class="restaurants-grid">
+                <div class="restaurants-content">
+                    <span class="section-tag">For Restaurant Partners</span>
+                    <h2 class="section-title">Grow Your Business<br>With Gauteng Order</h2>
+                    <p class="restaurants-desc">Join Gauteng's fastest-growing digital ordering platform. Get more orders, reduce queue pressure, and gain better insights into your customers.</p>
+                    <div class="restaurant-features">
+                        <div class="rest-feature">
+                            <div class="rest-feature-icon"><i class="fas fa-chart-line"></i></div>
+                            <div>
+                                <h4>Real-Time Dashboard</h4>
+                                <p>Manage orders, menus, pricing and promotions from one simple dashboard.</p>
+                            </div>
+                        </div>
+                        <div class="rest-feature">
+                            <div class="rest-feature-icon"><i class="fas fa-desktop"></i></div>
+                            <div>
+                                <h4>Kitchen Display</h4>
+                                <p>Orders flow directly to your kitchen screen — no manual phone orders, no mistakes.</p>
+                            </div>
+                        </div>
+                        <div class="rest-feature">
+                            <div class="rest-feature-icon"><i class="fas fa-tags"></i></div>
+                            <div>
+                                <h4>Menu Management</h4>
+                                <p>Update prices, add items, manage stock and promotions — all in real time.</p>
+                            </div>
+                        </div>
+                        <div class="rest-feature">
+                            <div class="rest-feature-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                            <div>
+                                <h4>Sales Reports</h4>
+                                <p>Understand your best sellers, peak times and revenue with detailed analytics.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#contact" class="btn btn-primary btn-lg">
+                        <i class="fas fa-handshake"></i> Become a Partner
+                    </a>
+                </div>
+                <div class="restaurants-visual">
+                    <div class="dashboard-mockup">
+                        <div class="dash-header">
+                            <div class="dash-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="dash-title">Restaurant Dashboard</span>
+                        </div>
+                        <div class="dash-stats">
+                            <div class="dash-stat">
+                                <span class="dash-stat-number">48</span>
+                                <span class="dash-stat-label">Orders Today</span>
+                            </div>
+                            <div class="dash-stat">
+                                <span class="dash-stat-number">R8,450</span>
+                                <span class="dash-stat-label">Revenue</span>
+                            </div>
+                            <div class="dash-stat">
+                                <span class="dash-stat-number">12min</span>
+                                <span class="dash-stat-label">Avg Prep Time</span>
+                            </div>
+                        </div>
+                        <div class="dash-orders">
+                            <div class="dash-order">
+                                <span class="dash-order-id">#GO-10450</span>
+                                <span class="dash-order-status preparing">Preparing</span>
+                            </div>
+                            <div class="dash-order">
+                                <span class="dash-order-id">#GO-10451</span>
+                                <span class="dash-order-status ready">Ready</span>
+                            </div>
+                            <div class="dash-order">
+                                <span class="dash-order-id">#GO-10452</span>
+                                <span class="dash-order-status collected">Collected</span>
+                            </div>
+                            <div class="dash-order">
+                                <span class="dash-order-id">#GO-10453</span>
+                                <span class="dash-order-status new">New</span>
+                            </div>
+                        </div>
+                        <div class="dash-kitchen">
+                            <span class="kitchen-label"><i class="fas fa-fire-burner"></i> Kitchen View</span>
+                            <div class="kitchen-flow">
+                                <span class="kitchen-step">NEW</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span class="kitchen-step">ACCEPTED</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span class="kitchen-step active">PREPARING</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span class="kitchen-step">READY</span>
+                                <i class="fas fa-arrow-right"></i>
+                                <span class="kitchen-step">COLLECTED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Drive-Through Section -->
+    <section class="drive-through" id="drive-through">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Collection Made Easy</span>
+                <h2 class="section-title">Digital Drive-Through</h2>
+                <p class="section-subtitle">Order before you arrive. Collect without leaving your car. It's the future of fast food.</p>
+            </div>
+            <div class="drive-grid">
+                <div class="drive-card">
+                    <div class="drive-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="drive-step">Step 1</div>
+                    <h3>Order Online</h3>
+                    <p>Browse the menu and place your order from anywhere — home, office, or on the road.</p>
+                </div>
+                <div class="drive-card">
+                    <div class="drive-icon">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <div class="drive-step">Step 2</div>
+                    <h3>Select Drive-Through</h3>
+                    <p>Choose "Drive-Through" at checkout and enter your vehicle registration number.</p>
+                </div>
+                <div class="drive-card">
+                    <div class="drive-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="drive-step">Step 3</div>
+                    <h3>Head to Restaurant</h3>
+                    <p>Drive to the restaurant at your selected collection time. No need to queue at the counter.</p>
+                </div>
+                <div class="drive-card">
+                    <div class="drive-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="drive-step">Step 4</div>
+                    <h3>Collect & Go</h3>
+                    <p>Give your order number or username. Staff confirms "PAID — READY" and hands over your food.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Demo Section -->
+    <section class="order-demo" id="order">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Try It Out</span>
+                <h2 class="section-title">See Your Order Flow</h2>
+                <p class="section-subtitle">Experience how easy ordering on Gauteng Order really is.</p>
+            </div>
+            <div class="order-flow">
+                <div class="order-step" id="orderStep1">
+                    <div class="order-step-icon"><i class="fas fa-qrcode"></i></div>
+                    <h4>Scan QR Code</h4>
+                    <p class="order-step-detail">Opens the Gauteng Order menu on your phone</p>
+                    <button class="btn btn-primary btn-sm" onclick="nextOrderStep(2)">Next</button>
+                </div>
+                <div class="order-step hidden" id="orderStep2">
+                    <div class="order-step-icon"><i class="fas fa-store"></i></div>
+                    <h4>Select Restaurant</h4>
+                    <p class="order-step-detail">Choose <strong>Burger Palace — Mandela Street</strong></p>
+                    <button class="btn btn-primary btn-sm" onclick="nextOrderStep(3)">Next</button>
+                </div>
+                <div class="order-step hidden" id="orderStep3">
+                    <div class="order-step-icon"><i class="fas fa-hamburger"></i></div>
+                    <h4>Choose Your Food</h4>
+                    <div class="demo-menu">
+                        <div class="demo-item">
+                            <span>Classic Beef Burger</span>
+                            <span>R75</span>
+                        </div>
+                        <div class="demo-item">
+                            <span>Chips</span>
+                            <span>R35</span>
+                        </div>
+                        <div class="demo-item">
+                            <span>Coke</span>
+                            <span>R20</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="submitDemoOrder()">Pay R130</button>
+                </div>
+                <div class="order-step hidden" id="orderStep4">
+                    <div class="order-step-icon"><i class="fas fa-check-circle"></i></div>
+                    <h4>Order Confirmed!</h4>
+                    <div class="order-confirmation">
+                        <div class="conf-row"><span>Order #</span><strong>GO-10452</strong></div>
+                        <div class="conf-row"><span>Username</span><strong>JOHN123</strong></div>
+                        <div class="conf-row"><span>Collection</span><strong>Drive-Through</strong></div>
+                        <div class="conf-row"><span>Status</span><strong class="text-paid">PAID ✓</strong></div>
+                    </div>
+                    <button class="btn btn-ghost btn-sm" onclick="nextOrderStep(1)">Start Over</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Restaurant Plans</span>
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-subtitle">Choose the plan that fits your restaurant. Start with a 30-day free pilot.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="pricing-price">
+                            <span class="currency">R</span>
+                            <span class="amount">499</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Up to 1 branch</li>
+                        <li><i class="fas fa-check"></i> Digital menu & QR codes</li>
+                        <li><i class="fas fa-check"></i> Online payments</li>
+                        <li><i class="fas fa-check"></i> Basic order dashboard</li>
+                        <li><i class="fas fa-check"></i> Email notifications</li>
+                        <li><i class="fas fa-check"></i> Basic sales reports</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline btn-block">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="pricing-price">
+                            <span class="currency">R</span>
+                            <span class="amount">999</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Up to 3 branches</li>
+                        <li><i class="fas fa-check"></i> Digital menu & QR codes</li>
+                        <li><i class="fas fa-check"></i> Online payments + drive-through</li>
+                        <li><i class="fas fa-check"></i> Kitchen display system</li>
+                        <li><i class="fas fa-check"></i> SMS & WhatsApp notifications</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check"></i> Promotional placement</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary btn-block">Get Started</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-price">
+                            <span class="currency">R</span>
+                            <span class="amount">2,499</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Unlimited branches</li>
+                        <li><i class="fas fa-check"></i> Everything in Professional</li>
+                        <li><i class="fas fa-check"></i> POS integration support</li>
+                        <li><i class="fas fa-check"></i> Custom branding</li>
+                        <li><i class="fas fa-check"></i> Loyalty programme</li>
+                        <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                        <li><i class="fas fa-check"></i> API access</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline btn-block">Contact Sales</a>
+                </div>
+            </div>
+            <div class="pricing-note">
+                <p>All plans include a <strong>30-day free pilot</strong>. Transaction fee of R3–R8 per completed order applies. Prices shown are for feasibility modelling — final pricing may vary.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competitive Advantage -->
+    <section class="advantage">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Our Difference</span>
+                        <h2 class="section-title">Why Gauteng Order?</h2>
+                <p class="section-subtitle">We're not just another digital menu. We're a complete ordering platform.</p>
+            </div>
+            <div class="advantage-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon"><i class="fas fa-layer-group"></i></div>
+                    <h3>Multi-Restaurant Marketplace</h3>
+                    <p>Unlike single-restaurant QR menus, we connect customers with many restaurants from one platform.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon"><i class="fas fa-car-side"></i></div>
+                    <h3>Pickup + Drive-Through</h3>
+                    <p>Most QR ordering platforms focus on dine-in. We optimise for pickup and drive-through collection.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon"><i class="fas fa-mobile-screen"></i></div>
+                    <h3>No App Downloads</h3>
+                    <p>Browser-first design means zero friction. Customers scan and order instantly — no installs needed.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon"><i class="fas fa-shield-halved"></i></div>
+                    <h3>POPIA Compliant</h3>
+                    <p>Built from the ground up with South African privacy law compliance and secure data handling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">Get In Touch</span>
+                    <h2 class="section-title">Ready to Get Started?</h2>
+                    <p>Whether you're a customer wanting to order or a restaurant looking to partner, we'd love to hear from you.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Office</strong>
+                                Mandela Street, Erf 275, Gauteng, South Africa
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-building"></i>
+                            <div>
+                                <strong>Company</strong>
+                                Gauteng Order Industry (Pty) Ltd
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <div>
+                                <strong>Website</strong>
+                                Gauteng Order local ordering service
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">I am a...</label>
+                            <select id="type">
+                                <option value="customer">Customer</option>
+                                <option value="restaurant">Restaurant Owner</option>
+                                <option value="partner">Potential Partner</option>
+                                <option value="investor">Investor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="4" placeholder="Tell us how we can help..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-icon"><i class="fas fa-qrcode"></i></span>
+                        <span class="logo-text">GAUTENG<span class="logo-accent">ODER</span></span>
+                    </a>
+                    <p>Gauteng's smartest way to order food. Scan. Order. Pay. Collect.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#drive-through">Drive-Through</a></li>
+                        <li><a href="#order">Order Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Restaurants</h4>
+                    <ul>
+                        <li><a href="#restaurants">Partner With Us</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">Dashboard Features</a></li>
+                        <li><a href="#">Kitchen Display</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">POPIA Compliance</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Gauteng Order Industry (Pty) Ltd. All rights reserved.</p>
+                <p>Mandela Street, Erf 275, Gauteng, South Africa</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/restaurant-site/main.js"></script>
+</body>
+</html>
